@@ -65,6 +65,8 @@ int gameloop(sf::RenderWindow &window, std::default_random_engine &gen){
 		dist(gen)
 	);
 
+	bool paused=false; // var controlling pause state
+
 	while(window.isOpen()){
 		sf::Event event;
         while (window.pollEvent(event)){
@@ -74,8 +76,8 @@ int gameloop(sf::RenderWindow &window, std::default_random_engine &gen){
 					break;
 				case sf::Event::KeyPressed:
 					switch(event.key.code){
-						case sf::Keyboard::F:
-							snake.grow();
+						case sf::Keyboard::Escape:
+							paused = !paused;
 							break;
 						default:
 							break;
@@ -85,114 +87,115 @@ int gameloop(sf::RenderWindow &window, std::default_random_engine &gen){
 					break;
 			}
         }
-
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-			snake.turn(adder::down);
-		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-			snake.turn(adder::up);
-		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-			snake.turn(adder::right);
-		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-			snake.turn(adder::left);
-		}
-
-		if(snake.isDead()){
-			/*
-				"Game Over" State
-			*/
-
-			sf::Font font;
-			font.loadFromFile("/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf");
-			
-			sf::Text txt;
-			txt.setString("The Adder hath perished!\n\npress 'ENTER' to retry");
-			txt.setFont(font);
-			txt.setCharacterSize(48);
-			txt.setFillColor({120, 120, 120});
-
-			window.draw(txt);
-			window.display();
-			
-			while(true){
-				window.pollEvent(event);
-				switch(event.type){
-					case sf::Event::Closed:
-						return 0;
-						break;
-					case sf::Event::KeyPressed:
-						switch(event.key.code){
-							case sf::Keyboard::Enter:
-								return 1;
-								break;
-							default:
-								break;
-						}
-					default:
-						break;
-				}
+		if(!paused){
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+				snake.turn(adder::down);
 			}
-		}
-		else{
-			window.clear();
-
-			// draw food
-			sf::RectangleShape food_rect;
-			food_rect.setSize({20,20});
-			food_rect.setFillColor(sf::Color::Yellow);
-
-			food_rect.setPosition({
-				(float)food.x*20 + ARENA.X,
-				(float)food.y*20 + ARENA.Y
-			});
-
-			window.draw(food_rect);
-
-			// draw snake
-			for(auto it=snake.getSegments().begin(); it != snake.getSegments().end(); it++){
-				sf::RectangleShape r;
-				r.setSize({20,20});
-				r.setFillColor(sf::Color::White);
-
-				r.setPosition({
-					(float)(*it).x*20 + ARENA.X,
-					(float)(*it).y*20 + ARENA.Y
-				});
-
-				window.draw(r);
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+				snake.turn(adder::up);
+			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+				snake.turn(adder::right);
+			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+				snake.turn(adder::left);
 			}
 
-			window.display();
+			if(snake.isDead()){
+				/*
+					"Game Over" State
+				*/
 
-			// update snake
-			snake.update();
+				sf::Font font;
+				font.loadFromFile("/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf");
+				
+				sf::Text txt;
+				txt.setString("The Adder hath perished!\n\npress 'ENTER' to retry");
+				txt.setFont(font);
+				txt.setCharacterSize(48);
+				txt.setFillColor({120, 120, 120});
 
-			// chk snake collision
-			if(
-				snake.getSegments()[0].y < 0 ||
-				snake.getSegments()[0].y >= ARENA.HEIGHT ||
-				snake.getSegments()[0].x < 0 || 
-				snake.getSegments()[0].x >= ARENA.WIDTH
-			) snake.kill();
-			else{
-
-				for(auto it=snake.getSegments().begin()+1; it!=snake.getSegments().end(); it++){
-					if(snake.getSegments()[0] == (*it)){
-						snake.kill();
-						break;
+				window.draw(txt);
+				window.display();
+				
+				while(true){
+					window.pollEvent(event);
+					switch(event.type){
+						case sf::Event::Closed:
+							return 0;
+							break;
+						case sf::Event::KeyPressed:
+							switch(event.key.code){
+								case sf::Keyboard::Enter:
+									return 1;
+									break;
+								default:
+									break;
+							}
+						default:
+							break;
 					}
 				}
+			}
+			else{
+				window.clear();
 
-				if(snake.getSegments()[0] == food){
-					snake.grow();
+				// draw food
+				sf::RectangleShape food_rect;
+				food_rect.setSize({20,20});
+				food_rect.setFillColor(sf::Color::Yellow);
 
-					// move food to new spot
-					food = {
-						dist(gen),
-						dist(gen)
-					};
+				food_rect.setPosition({
+					(float)food.x*20 + ARENA.X,
+					(float)food.y*20 + ARENA.Y
+				});
+
+				window.draw(food_rect);
+
+				// draw snake
+				for(auto it=snake.getSegments().begin(); it != snake.getSegments().end(); it++){
+					sf::RectangleShape r;
+					r.setSize({20,20});
+					r.setFillColor(sf::Color::White);
+
+					r.setPosition({
+						(float)(*it).x*20 + ARENA.X,
+						(float)(*it).y*20 + ARENA.Y
+					});
+
+					window.draw(r);
+				}
+
+				window.display();
+
+				// update snake
+				snake.update();
+
+				// chk snake collision
+				if(
+					snake.getSegments()[0].y < 0 ||
+					snake.getSegments()[0].y >= ARENA.HEIGHT ||
+					snake.getSegments()[0].x < 0 || 
+					snake.getSegments()[0].x >= ARENA.WIDTH
+				) snake.kill();
+				else{
+
+					for(auto it=snake.getSegments().begin()+1; it!=snake.getSegments().end(); it++){
+						if(snake.getSegments()[0] == (*it)){
+							snake.kill();
+							break;
+						}
+					}
+
+					if(snake.getSegments()[0] == food){
+						snake.grow();
+
+						// move food to new spot
+						food = {
+							dist(gen),
+							dist(gen)
+						};
+					}
 				}
 			}
 		}
