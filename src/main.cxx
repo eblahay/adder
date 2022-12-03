@@ -16,21 +16,24 @@
 #include <random>
 
 // function which contains the gameloop
-int gameloop(sf::RenderWindow &window);
+int gameloop(sf::RenderWindow &window, std::default_random_engine &gen);
 
 int main(int argc, char* argv[]){
+	
 	sf::RenderWindow window;
 	window.create({560,560}, "The Adder");
 
 	window.setFramerateLimit(24);
 
-	while(gameloop(window) != 0);
+	std::default_random_engine gen(5);
+
+	while(gameloop(window, gen) != 0);
 	window.close();
 	
 	return 0;
 }
 
-int gameloop(sf::RenderWindow &window){
+int gameloop(sf::RenderWindow &window, std::default_random_engine &gen){
 	
 	// arena bounds
 	struct Arena{
@@ -46,7 +49,6 @@ int gameloop(sf::RenderWindow &window){
 	adder::Snake snake({0, 0});
 
 	// set up food
-	std::default_random_engine gen(6);
 	std::uniform_int_distribution<unsigned int> dist(1,26);
 
 	adder::Coord food(
