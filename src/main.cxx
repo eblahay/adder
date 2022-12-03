@@ -16,10 +16,14 @@
 #include <random>
 #include <chrono>
 
+#include <adder/config.h>
+
 // function which contains the gameloop
 int gameloop(sf::RenderWindow &window, std::default_random_engine &gen);
 
 int main(int argc, char* argv[]){
+	std::cout << "Adder v" << PROJ_VER << '\n';
+
 	// prep & seed RNG
 	std::default_random_engine gen(
 		std::chrono::system_clock::now().time_since_epoch().count()
@@ -107,7 +111,7 @@ int gameloop(sf::RenderWindow &window, std::default_random_engine &gen){
 			txt.setString("The Adder hath perished!\n\npress 'ENTER' to retry");
 			txt.setFont(font);
 			txt.setCharacterSize(48);
-			txt.setFillColor(sf::Color::Red);
+			txt.setFillColor({120, 120, 120});
 
 			window.draw(txt);
 			window.display();
@@ -184,6 +188,7 @@ int gameloop(sf::RenderWindow &window, std::default_random_engine &gen){
 				if(snake.getSegments()[0] == food){
 					snake.grow();
 
+					// move food to new spot
 					food = {
 						dist(gen),
 						dist(gen)
