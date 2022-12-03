@@ -22,8 +22,6 @@
 int gameloop(sf::RenderWindow &window, std::default_random_engine &gen);
 
 int main(int argc, char* argv[]){
-	std::cout << "Adder v" << PROJ_VER << '\n';
-
 	// prep & seed RNG
 	std::default_random_engine gen(
 		std::chrono::system_clock::now().time_since_epoch().count()
@@ -31,7 +29,9 @@ int main(int argc, char* argv[]){
 
 	// prep window
 	sf::RenderWindow window;
-	window.create({560,560}, "The Adder");
+	std::string title_str("The Adder v");
+	title_str.append(PROJ_VER);
+	window.create({560,560}, title_str);
 
 	window.setFramerateLimit(24);
 	///
