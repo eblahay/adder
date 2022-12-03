@@ -14,18 +14,23 @@
 #include <vector>
 #include <map>
 #include <random>
+#include <chrono>
 
 // function which contains the gameloop
 int gameloop(sf::RenderWindow &window, std::default_random_engine &gen);
 
 int main(int argc, char* argv[]){
-	
+	// prep & seed RNG
+	std::default_random_engine gen(
+		std::chrono::system_clock::now().time_since_epoch().count()
+	);
+
+	// prep window
 	sf::RenderWindow window;
 	window.create({560,560}, "The Adder");
 
 	window.setFramerateLimit(24);
-
-	std::default_random_engine gen(5);
+	///
 
 	while(gameloop(window, gen) != 0);
 	window.close();
