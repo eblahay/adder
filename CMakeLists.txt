@@ -19,6 +19,10 @@ set(
     src/main.cxx
     src/Snake.cxx
     src/types.cxx
+    src/StateMachine.cxx
+    src/states/GameplayState.cxx
+    src/states/GameOverState.cxx
+    src/states/InitState.cxx
 )
 add_executable(adder ${SRC})
 target_link_libraries(adder sfml-window sfml-graphics sfml-system)
