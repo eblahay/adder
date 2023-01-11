@@ -15,6 +15,14 @@ adder::GameplayState::GameplayState(adder::StateMachine* sm, std::default_random
     // set food's initial position
     food.x = dist(gen);
     food.y = dist(gen);
+
+    // limit framerate (this is called here to prevent input slow-down in other states)
+    sm->window.setFramerateLimit(16);
+}
+
+adder::GameplayState::~GameplayState(){
+    // change fps limit back to 60 (to avoid input slowdown in other states)
+    sm->window.setFramerateLimit(60);
 }
 
 void adder::GameplayState::handleInput(){

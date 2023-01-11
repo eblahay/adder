@@ -21,6 +21,7 @@ namespace adder {
     class GameplayState: public State{
         public:
             GameplayState(StateMachine* sm, std::default_random_engine& gen);
+            ~GameplayState();
 
             void handleInput();
 

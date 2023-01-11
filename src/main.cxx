@@ -19,7 +19,7 @@
 #include <adder/config.h>
 
 #include <adder/StateMachine.hxx>
-#include <adder/states/GameplayState.hxx>
+#include <adder/states/TitlescreenState.hxx>
 
 int main(int argc, char* argv[]){
 	// prep & seed RNG
@@ -31,15 +31,13 @@ int main(int argc, char* argv[]){
 	adder::StateMachine sm;
 
 	// prep window
-	std::string title_str("The Adder v");
-	title_str.append(PROJ_VER);
-	sm.window.create({560,560}, title_str);
+	sm.window.create({560,560}, "The Adder");
 
-	sm.window.setFramerateLimit(16);
+	sm.window.setFramerateLimit(60);
 	///
 
 	// add initial state
-	sm.setState<adder::GameplayState>(gen);
+	sm.setState<adder::TitlescreenState>(gen);
 	
 	// gameploop
 	while(sm.isRunning()){

@@ -23,6 +23,7 @@ set(
     src/states/GameplayState.cxx
     src/states/GameOverState.cxx
     src/states/InitState.cxx
+    src/states/TitlescreenState.cxx
 )
 add_executable(adder ${SRC})
 target_link_libraries(adder sfml-window sfml-graphics sfml-system)
