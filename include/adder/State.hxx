@@ -1,6 +1,6 @@
 #pragma once
 
-#include "adder/StateMachine.hxx"
+#include <adder/StateMachine.hxx>
 
 namespace adder {
     /*

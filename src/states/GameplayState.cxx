@@ -1,6 +1,6 @@
-#include <adder/StateMachine.hxx>
-#include <SFML/Window/Event.hpp>
 #include <adder/states/GameplayState.hxx>
+
+#include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include <adder/states/GameOverState.hxx>

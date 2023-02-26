@@ -2,6 +2,8 @@
 
 #include <random>
 
+#include <SFML/Graphics/RectangleShape.hpp>
+
 #include <adder/State.hxx>
 #include <adder/Snake.hxx>
 
