@@ -23,7 +23,6 @@ namespace adder {
     class GameplayState: public State{
         public:
             GameplayState(StateMachine* sm, std::default_random_engine& gen);
-            ~GameplayState();
 
             void handleInput();
 
@@ -37,5 +36,7 @@ namespace adder {
             // RNG
             std::default_random_engine& gen;
             std::uniform_int_distribution<unsigned int> dist;
+
+            float cnt;// count
     };
 }

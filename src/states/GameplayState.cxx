@@ -61,7 +61,13 @@ void adder::GameplayState::handleInput(){
 }
 
 void adder::GameplayState::update(){
-    snake.update();
+    // counter code; staggers snake collision update to ~12fps (60 / 5)
+    // basic exec pattern: 0 (snake updates) -> 1 -> 2 -> 3 -> 4 (reset counter) -> [repeat]
+    if(cnt >= 1.f) cnt = 0.f;
+    
+    if(cnt == 0.f) snake.update();
+    cnt += 0.2;
+    
 
     // chk snake collision
     if(
@@ -98,13 +104,9 @@ void adder::GameplayState::draw(){
     sm->window.clear();
 
     // draw food
-    sf::RectangleShape food_rect;
-    food_rect.setSize({20,20});
-    food_rect.setFillColor(sf::Color::Yellow);
-
     food_rect.setPosition({
-        (float)food.x*20 + ARENA.X,
-        (float)food.y*20 + ARENA.Y
+        (float)food.x * TILE_LEN + ARENA.X,
+        (float)food.y * TILE_LEN + ARENA.Y
     });
 
     sm->window.draw(food_rect);
