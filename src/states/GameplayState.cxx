@@ -10,19 +10,19 @@ adder::GameplayState::GameplayState(adder::StateMachine* sm, std::default_random
     snake({0,0}),
     gen(gen),
     dist(1, ARENA.WIDTH-2),
-    food(0,0)
+    food(0,0),
+    cnt(0),
+    TILE_LEN(20)
 {
     // set food's initial position
     food.x = dist(gen);
     food.y = dist(gen);
 
-    // limit framerate (this is called here to prevent input slow-down in other states)
-    sm->window.setFramerateLimit(16);
-}
+    // get some sprites prepped
+    food_rect.setFillColor(sf::Color::Yellow);
+    food_rect.setSize({TILE_LEN,TILE_LEN});
 
-adder::GameplayState::~GameplayState(){
-    // change fps limit back to 60 (to avoid input slowdown in other states)
-    sm->window.setFramerateLimit(60);
+    snake_spt.setSize({TILE_LEN,TILE_LEN});
 }
 
 void adder::GameplayState::handleInput(){
@@ -112,16 +112,24 @@ void adder::GameplayState::draw(){
     sm->window.draw(food_rect);
 
     // draw snake
-    for(auto it=snake.getSegments().begin(); it != snake.getSegments().end(); it++){
-        sf::RectangleShape r;
-        r.setSize({20,20});
-        r.setFillColor(sf::Color::White);
+    
+    // draw head
+    snake_spt.setFillColor(sf::Color::Cyan);
+    snake_spt.setPosition({
+        (float)(*snake.getSegments().begin()).x * TILE_LEN + ARENA.X,
+        (float)(*snake.getSegments().begin()).y * TILE_LEN + ARENA.Y
+    });
+    sm->window.draw(snake_spt);
 
-        r.setPosition({
-            (float)(*it).x*20 + ARENA.X,
-            (float)(*it).y*20 + ARENA.Y
+    // draw tail
+    snake_spt.setFillColor(sf::Color::White);
+
+    for(auto it=snake.getSegments().begin()+1; it != snake.getSegments().end(); it++){
+        snake_spt.setPosition({
+            (float)(*it).x * TILE_LEN + ARENA.X,
+            (float)(*it).y * TILE_LEN + ARENA.Y
         });
 
-        sm->window.draw(r);
+        sm->window.draw(snake_spt);
     }
 }

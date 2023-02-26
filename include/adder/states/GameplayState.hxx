@@ -38,5 +38,8 @@ namespace adder {
             std::uniform_int_distribution<unsigned int> dist;
 
             float cnt;// count
+
+            sf::RectangleShape food_rect, snake_spt;
+            const float TILE_LEN;
     };
 }
