@@ -35,7 +35,7 @@ namespace adder {
             Coord food;
             // RNG
             std::default_random_engine& gen;
-            std::uniform_int_distribution<unsigned int> dist;
+            std::uniform_int_distribution<int> dist;
 
             float cnt;// count
 

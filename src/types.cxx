@@ -1,6 +1,6 @@
 #include <adder/types.hxx>
 
-adder::Coord::Coord(unsigned int x, unsigned int y):
+adder::Coord::Coord(int x, int y):
     x(x), y(y)
 {}
 

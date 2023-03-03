@@ -6,10 +6,10 @@ namespace adder {
     // class for storing coordinate values
     class Coord{
         public:
-            Coord(unsigned int x, unsigned int y);
+            Coord(int x, int y);
 
             bool operator==(const adder::Coord& b)const;
 
-            unsigned int x, y;
+            int x, y;
     };
 }
