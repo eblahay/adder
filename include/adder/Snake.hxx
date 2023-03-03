@@ -14,6 +14,9 @@ namespace adder {
             // get segment info
             const std::vector<Coord>& getSegments()const;
 
+            // output the current targeted destination for the snake's head
+            const Coord& getTarget()const;
+
             // figure out if snake is dead (used to determine GAME OVER)
             const bool& isDead()const;
 
@@ -30,10 +33,15 @@ namespace adder {
             void turn(const Direction &direction);
 
         private:
+            // set the alters the target value
+            void setTarget();
+
             /*
                 a collection of the coordinates which make up the snake's segments
             */
             std::vector<Coord> segments;
+
+            Coord target;
 
             Direction direction;
 

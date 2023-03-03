@@ -1,13 +1,18 @@
+#include "adder/types.hxx"
 #include <adder/Snake.hxx>
 
 adder::Snake::Snake(const adder::Coord &starting_coordinate):
-    direction(down), is_dead(false)
+    direction(down), is_dead(false), target(0,0)
 {
     segments.push_back(starting_coordinate);
 }
 
 const std::vector<adder::Coord>& adder::Snake::getSegments()const{
     return segments;
+}
+
+const adder::Coord& adder::Snake::getTarget()const{
+    return target;
 }
 
 const bool& adder::Snake::isDead()const{
@@ -21,10 +26,10 @@ void adder::Snake::update(){
     }
 
     // update head
-    if(direction == down) segments[0].y++;
-    else if(direction == up) segments[0].y--;
-    else if(direction == right) segments[0].x++;
-    else segments[0].x--;
+    segments[0] = getTarget();
+
+    // update target
+    setTarget();
 }
 
 void adder::Snake::kill(){
@@ -63,4 +68,16 @@ void adder::Snake::turn(const Direction &direction){
     ){
         this->direction = direction;
     }
+}
+
+void adder::Snake::setTarget(){
+    int x=0, y=0;
+
+    // figure out snake's target based on head coords & direction
+    if(direction == down) y++;
+    else if(direction == up) y--;
+    else if(direction == right) x++;
+    else x--;
+
+    target = Coord(segments[0].x + x, segments[0].y + y);
 }

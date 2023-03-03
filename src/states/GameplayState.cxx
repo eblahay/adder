@@ -1,9 +1,12 @@
 #include <adder/states/GameplayState.hxx>
 
+#include <iterator>
+
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include <adder/states/GameOverState.hxx>
+#include <adder/Snake.hxx>
 
 adder::GameplayState::GameplayState(adder::StateMachine* sm, std::default_random_engine& gen):
     State(sm),
@@ -68,7 +71,6 @@ void adder::GameplayState::update(){
     if(cnt == 0.f) snake.update();
     cnt += 0.2;
     
-
     // chk snake collision
     if(
         snake.getSegments()[0].y < 0 ||
@@ -116,8 +118,8 @@ void adder::GameplayState::draw(){
     // draw head
     snake_spt.setFillColor(sf::Color::Cyan);
     snake_spt.setPosition({
-        (float)(*snake.getSegments().begin()).x * TILE_LEN + ARENA.X,
-        (float)(*snake.getSegments().begin()).y * TILE_LEN + ARENA.Y
+        (((float)(*snake.getSegments().begin()).x) + ((float)(snake.getTarget().x - (*snake.getSegments().begin()).x) * cnt)) * TILE_LEN + ARENA.X,
+        (((float)(*snake.getSegments().begin()).y) + ((float)(snake.getTarget().y - (*snake.getSegments().begin()).y) * cnt)) * TILE_LEN + ARENA.Y
     });
     sm->window.draw(snake_spt);
 
@@ -126,8 +128,8 @@ void adder::GameplayState::draw(){
 
     for(auto it=snake.getSegments().begin()+1; it != snake.getSegments().end(); it++){
         snake_spt.setPosition({
-            (float)(*it).x * TILE_LEN + ARENA.X,
-            (float)(*it).y * TILE_LEN + ARENA.Y
+            (((float)(*it).x) + ((float)(std::prev(it)->x - (*it).x) * cnt)) * TILE_LEN + ARENA.X,
+            (((float)(*it).y) + ((float)(std::prev(it)->y - (*it).y) * cnt)) * TILE_LEN + ARENA.Y
         });
 
         sm->window.draw(snake_spt);
