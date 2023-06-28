@@ -1,5 +1,6 @@
 #include "adder/StateMachine.hxx"
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <adder/states/GameOverState.hxx>
 #include <adder/states/GameplayState.hxx>
 
@@ -30,6 +31,12 @@ void adder::GameOverState::handleInput(){
                     // retry
                     sm->changeState<GameplayState>(gen);
                     break;
+
+                case sf::Keyboard::Escape:
+                    // Exit Game
+                    sm->end();
+                    break;
+
                 default:
                     break;
             }
