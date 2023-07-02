@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace adder {
     class State; // foward decl
@@ -33,6 +34,9 @@ namespace adder {
             // return a reference to the current state
             std::shared_ptr<State>& getCurrentState();
 
+            // return current delta-time (in seconds)
+            const float& getDeltaTime()const;
+
             const bool& isRunning();
 
             sf::RenderWindow window;
@@ -43,6 +47,9 @@ namespace adder {
             // var rep. which dictates whether the 
             // gameloop is running
             bool is_running, state_chg_f;
+
+            sf::Clock clock;
+            float dt; // delta-time; the amt of time between this frame and the last
             
     };
 }

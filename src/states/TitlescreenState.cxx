@@ -25,8 +25,8 @@ adder::TitlescreenState::TitlescreenState(adder::StateMachine* sm, std::default_
     ver_txt.setFont(font);
     ver_txt.setCharacterSize(12);
     ver_txt.setPosition(
-        (sm->window.getSize().x - ver_txt.getGlobalBounds().width),
-        (sm->window.getSize().y - ver_txt.getGlobalBounds().height)
+        (sm->window.getSize().x - ver_txt.getGlobalBounds().width - 8),
+        (sm->window.getSize().y - ver_txt.getGlobalBounds().height - 8)
     );
     ver_txt.setFillColor({255,255,255});
 }

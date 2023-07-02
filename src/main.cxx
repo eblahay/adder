@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	// prep window
 	sm.window.create({560,560}, "The Adder");
 
-	sm.window.setFramerateLimit(60);
+	sm.window.setFramerateLimit(60); // here for performance reasons
 	///
 
 	// add initial state

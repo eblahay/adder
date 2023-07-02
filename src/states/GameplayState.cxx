@@ -69,7 +69,7 @@ void adder::GameplayState::update(){
     if(cnt >= 1.f) cnt = 0.f;
     
     if(cnt == 0.f) snake.update();
-    cnt += 0.2;
+    cnt += 12 * sm->getDeltaTime();
     
     // chk snake collision
     if(
