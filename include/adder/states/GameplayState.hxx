@@ -3,6 +3,8 @@
 #include <random>
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 #include <adder/State.hxx>
 #include <adder/Snake.hxx>
@@ -39,7 +41,9 @@ namespace adder {
 
             float cnt;// count
 
-            sf::RectangleShape food_rect, snake_spt;
+            sf::Sprite food_spt, snake_spt;
             const float TILE_LEN;
+
+            sf::Texture food_txtr, snake_txtr;
     };
 }

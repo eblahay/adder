@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <adder/State.hxx>
 
 #include <SFML/Graphics/Font.hpp>

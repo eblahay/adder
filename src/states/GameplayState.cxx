@@ -1,3 +1,5 @@
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <adder/states/GameplayState.hxx>
 
 #include <iterator>
@@ -7,6 +9,7 @@
 
 #include <adder/states/GameOverState.hxx>
 #include <adder/Snake.hxx>
+#include <sstream>
 
 adder::GameplayState::GameplayState(adder::StateMachine* sm, std::default_random_engine& gen):
     State(sm),
@@ -21,11 +24,13 @@ adder::GameplayState::GameplayState(adder::StateMachine* sm, std::default_random
     food.x = dist(gen);
     food.y = dist(gen);
 
-    // get some sprites prepped
-    food_rect.setFillColor(sf::Color::Yellow);
-    food_rect.setSize({TILE_LEN,TILE_LEN});
+    // load textures
+    food_txtr.loadFromFile("../data/assets/food.png"); // change path later
+    snake_txtr.loadFromFile("../data/assets/snake.png");
 
-    snake_spt.setSize({TILE_LEN,TILE_LEN});
+    // load sprites
+    food_spt.setTexture(food_txtr);
+    snake_spt.setTexture(snake_txtr);
 }
 
 void adder::GameplayState::handleInput(){
@@ -49,16 +54,28 @@ void adder::GameplayState::handleInput(){
         }
     }
     
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+    if(
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Down)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::S)
+    ){
         snake.turn(adder::down);
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+    else if(
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+    ){
         snake.turn(adder::up);
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+    else if(
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::D)
+    ){
         snake.turn(adder::right);
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+    else if(
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::A)
+    ){
         snake.turn(adder::left);
     }
 }
@@ -103,20 +120,36 @@ void adder::GameplayState::update(){
 }
 
 void adder::GameplayState::draw(){
-    sm->window.clear();
+    sm->window.clear({24,100,0});
 
     // draw food
-    food_rect.setPosition({
+    food_spt.setPosition({
         (float)food.x * TILE_LEN + ARENA.X,
         (float)food.y * TILE_LEN + ARENA.Y
     });
 
-    sm->window.draw(food_rect);
+    sm->window.draw(food_spt);
 
     // draw snake
     
     // draw head
-    snake_spt.setFillColor(sf::Color::Cyan);
+    switch(snake.getDirection()){
+        case up:
+            snake_spt.setTextureRect({0,0, 20,20});
+            break;
+        case down:
+            snake_spt.setTextureRect({20,0, 20,20});
+            break;
+        case left:
+            snake_spt.setTextureRect({40,0, 20,20});
+            break;
+        case right:
+            snake_spt.setTextureRect({60,0, 20,20});
+            break;
+        default:
+            snake_spt.setTextureRect({0,0, 20,20});
+            break;
+    }
     snake_spt.setPosition({
         (((float)(*snake.getSegments().begin()).x) + ((float)(snake.getTarget().x - (*snake.getSegments().begin()).x) * cnt)) * TILE_LEN + ARENA.X,
         (((float)(*snake.getSegments().begin()).y) + ((float)(snake.getTarget().y - (*snake.getSegments().begin()).y) * cnt)) * TILE_LEN + ARENA.Y
@@ -124,7 +157,7 @@ void adder::GameplayState::draw(){
     sm->window.draw(snake_spt);
 
     // draw tail
-    snake_spt.setFillColor(sf::Color::White);
+    snake_spt.setTextureRect({0,20, 20,20});
 
     for(auto it=snake.getSegments().begin()+1; it != snake.getSegments().end(); it++){
         snake_spt.setPosition({

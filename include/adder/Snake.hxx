@@ -17,6 +17,9 @@ namespace adder {
             // output the current targeted destination for the snake's head
             const Coord& getTarget()const;
 
+            // get snake's current direction
+            const Direction& getDirection()const;
+
             // figure out if snake is dead (used to determine GAME OVER)
             const bool& isDead()const;
 

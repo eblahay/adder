@@ -15,6 +15,10 @@ const adder::Coord& adder::Snake::getTarget()const{
     return target;
 }
 
+const adder::Direction& adder::Snake::getDirection()const{
+    return direction;
+}
+
 const bool& adder::Snake::isDead()const{
     return is_dead;
 }
